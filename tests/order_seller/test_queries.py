@@ -2,6 +2,7 @@ import pytest
 import pandas as pd
 from src.order_seller.queries import OrderDataStore
 import io
+from pathlib import Path
 
 MOCK_ORDERS = """order_id,order_status,order_delivered_carrier_date
 ord1,delivered,2017-10-04 19:55:00
@@ -19,14 +20,21 @@ sel2,13024
 """
 
 def test_queries(monkeypatch):
+    original_read_csv = pd.read_csv
+
     def mock_read_csv(filepath):
-        filename = str(filepath).split("/")[-1]
+        if hasattr(filepath, "read"):
+            return original_read_csv(filepath)
+
+        filename = Path(filepath).name
         if "olist_orders_dataset.csv" in filename:
-            return pd.read_csv(io.StringIO(MOCK_ORDERS))
+            return original_read_csv(io.StringIO(MOCK_ORDERS))
         elif "olist_order_items_dataset.csv" in filename:
-            return pd.read_csv(io.StringIO(MOCK_ITEMS))
+            return original_read_csv(io.StringIO(MOCK_ITEMS))
         elif "olist_sellers_dataset.csv" in filename:
-            return pd.read_csv(io.StringIO(MOCK_SELLERS))
+            return original_read_csv(io.StringIO(MOCK_SELLERS))
+
+        raise AssertionError(f"Unexpected CSV path: {filepath}")
             
     monkeypatch.setattr(pd, "read_csv", mock_read_csv)
     

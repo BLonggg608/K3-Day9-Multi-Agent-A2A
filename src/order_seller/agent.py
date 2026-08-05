@@ -15,7 +15,8 @@ class OrderSellerAgent:
 
     def analyze(self, context: dict[str, Any]) -> AgentResult:
         case = context.get("case", {})
-        order_id = case.get("claimed_order_id")
+        customer_request = case.get("customer_request", {})
+        order_id = customer_request.get("claimed_order_id")
         
         if not order_id:
             return AgentResult(
@@ -43,7 +44,8 @@ class OrderSellerAgent:
         item_total_brl = 0.0
         freight_total_brl = 0.0
         seller_handoff_violations = False
-        evidence_ids = [f"EVI-ORD-{order_id}"]
+        violating_seller_ids: list[str] = []
+        evidence_ids = [f"order:{order_id}"]
         
         if not items_df.empty:
             item_total_brl = items_df["price"].sum()
@@ -52,9 +54,14 @@ class OrderSellerAgent:
             
             if pd.notna(order_delivered_carrier_date):
                 # check if order_delivered_carrier_date > shipping_limit_date
-                violations = items_df[order_delivered_carrier_date > items_df["shipping_limit_date"]]
+                violations = items_df[
+                    order_delivered_carrier_date > items_df["shipping_limit_date"]
+                ]
                 if not violations.empty:
                     seller_handoff_violations = True
+                    violating_seller_ids = (
+                        violations["seller_id"].dropna().unique().tolist()
+                    )
             
             # Convert timestamp columns to string for JSON serialization
             items_df_copy = items_df.copy()
@@ -62,9 +69,11 @@ class OrderSellerAgent:
             items = items_df_copy.to_dict(orient="records")
             
             for seller_id in seller_ids:
-                evidence_ids.append(f"EVI-SEL-{seller_id}")
+                evidence_ids.append(f"seller:{seller_id}")
             for _, item_row in items_df.iterrows():
-                evidence_ids.append(f"EVI-ITM-{item_row['order_item_id']}")
+                evidence_ids.append(
+                    f"item:{order_id}:{int(item_row['order_item_id'])}"
+                )
                 
         item_total_brl = round(float(item_total_brl), 2)
         freight_total_brl = round(float(freight_total_brl), 2)
@@ -77,6 +86,7 @@ class OrderSellerAgent:
             "item_total_brl": item_total_brl,
             "freight_total_brl": freight_total_brl,
             "seller_handoff_violations": seller_handoff_violations,
+            "violating_seller_ids": violating_seller_ids,
             "evidence_ids": evidence_ids
         }
         

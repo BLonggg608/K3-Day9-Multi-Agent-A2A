@@ -26,7 +26,7 @@ class MockDataStore:
 
 def test_analyze_normal_order():
     agent = OrderSellerAgent(data_store=MockDataStore())
-    res = agent.analyze({"case": {"claimed_order_id": "ord1"}})
+    res = agent.analyze({"case": {"customer_request": {"claimed_order_id": "ord1"}}})
     
     assert res.ok
     assert res.data["order_id"] == "ord1"
@@ -36,12 +36,14 @@ def test_analyze_normal_order():
     assert res.data["seller_handoff_violations"] is True
     assert "sel1" in res.data["seller_ids"]
     assert "sel2" in res.data["seller_ids"]
-    assert "EVI-ORD-ord1" in res.data["evidence_ids"]
-    assert "EVI-ITM-1" in res.data["evidence_ids"]
+    assert "order:ord1" in res.data["evidence_ids"]
+    assert "item:ord1:1" in res.data["evidence_ids"]
+    assert "seller:sel1" in res.data["evidence_ids"]
+    assert res.data["violating_seller_ids"] == ["sel1"]
 
 def test_analyze_canceled_order():
     agent = OrderSellerAgent(data_store=MockDataStore())
-    res = agent.analyze({"case": {"claimed_order_id": "ord_canceled"}})
+    res = agent.analyze({"case": {"customer_request": {"claimed_order_id": "ord_canceled"}}})
     
     assert res.ok
     assert res.data["order_status"] == "canceled"
@@ -49,12 +51,12 @@ def test_analyze_canceled_order():
 
 def test_analyze_unavailable_order():
     agent = OrderSellerAgent(data_store=MockDataStore())
-    res = agent.analyze({"case": {"claimed_order_id": "missing"}})
+    res = agent.analyze({"case": {"customer_request": {"claimed_order_id": "missing"}}})
     assert not res.ok
     assert res.errors == ["Order not found: missing"]
 
 def test_analyze_empty_items():
     agent = OrderSellerAgent(data_store=MockDataStore())
-    res = agent.analyze({"case": {"claimed_order_id": "ord_empty"}})
+    res = agent.analyze({"case": {"customer_request": {"claimed_order_id": "ord_empty"}}})
     assert res.ok
     assert res.data["item_total_brl"] == 0.0
