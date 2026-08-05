@@ -51,6 +51,36 @@ class Coordinator:
         for result in context.results.values():
             evidence.extend(result.evidence_ids)
         merged["evidence_ids"] = list(dict.fromkeys(evidence))
+
+        order_data = next(
+            (
+                result.data
+                for name, result in context.results.items()
+                if name in {"order_seller", "order", "order_agent"} and result.ok
+            ),
+            {},
+        )
+        payment_data = next(
+            (
+                result.data
+                for name, result in context.results.items()
+                if name in {"payment", "payment_agent"} and result.ok
+            ),
+            {},
+        )
+        order_id = order_data.get("order_id")
+        items = order_data.get("items", []) or []
+        item_ids = [
+            f"{order_id}:{int(item['order_item_id'])}"
+            for item in items
+            if order_id and item.get("order_item_id") is not None
+        ]
+        merged["affected_entities"] = {
+            "order_ids": [order_id] if order_id else [],
+            "item_ids": item_ids[:5],
+            "seller_ids": list(order_data.get("seller_ids", []))[:5],
+            "payment_ids": list(payment_data.get("payment_ids", []))[:5],
+        }
         return merged
 
     @staticmethod
@@ -65,4 +95,3 @@ class Coordinator:
                 "completed_agents": list(context.results),
             },
         }
-
