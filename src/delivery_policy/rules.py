@@ -12,7 +12,6 @@ from typing import Any
 
 POLICY_VERSION = "EC_POLICY_V1"
 PAYMENT_TOLERANCE_BRL = Decimal("0.10")
-DECISION_CONFIDENCE = 1.0
 
 POLICY_PRIORITY = (
     "canceled_order_paid",

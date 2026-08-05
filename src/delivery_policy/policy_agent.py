@@ -7,13 +7,58 @@ from typing import Any
 from src.shared.contracts import AgentResult
 
 from .delivery_agent import _result_data
-from .rules import (
-    DECISION_CONFIDENCE,
-    ISSUE_RULES,
-    POLICY_VERSION,
-    money,
-    payment_matches_order,
-)
+from .rules import ISSUE_RULES, POLICY_VERSION, money, payment_matches_order
+
+
+def calculate_confidence(
+    issue: str,
+    order_data: dict[str, Any],
+    payment_data: dict[str, Any],
+    delivery_data: dict[str, Any],
+) -> float:
+    """Score how completely the source facts support the selected rule.
+
+    This is deterministic and explainable. Missing facts reduce confidence;
+    the LLM audit is never allowed to choose or modify this value.
+    """
+    score = 1.0
+
+    if not order_data.get("order_status"):
+        score -= 0.25
+    if money(payment_data.get("payment_total_brl", 0)) <= 0 and issue in {
+        "canceled_order_paid",
+        "unavailable_order_paid",
+    }:
+        score -= 0.25
+
+    if issue in {"late_delivery_seller", "late_delivery_logistics"}:
+        if not delivery_data.get("has_delivery_dates", False):
+            score -= 0.25
+        if not delivery_data.get("has_carrier_date", False):
+            score -= 0.10
+        if not delivery_data.get("has_shipping_limits", False):
+            score -= 0.10
+
+    if issue == "late_delivery_seller" and not delivery_data.get(
+        "late_handoff_seller_ids"
+    ):
+        score -= 0.20
+
+    if issue == "valid_split_payment":
+        if not payment_data.get("is_split_payment", False):
+            score -= 0.20
+        if not payment_data.get("is_valid_split_payment", False):
+            score -= 0.20
+
+    if issue == "unsupported_late_claim":
+        if not delivery_data.get("has_delivery_dates", False):
+            score -= 0.25
+        item_total = money(order_data.get("item_total_brl", 0))
+        freight_total = money(order_data.get("freight_total_brl", 0))
+        if not payment_matches_order(payment_data, item_total, freight_total):
+            score -= 0.20
+
+    return round(max(0.0, min(score, 1.0)), 2)
 
 
 def _select_issue(
@@ -68,6 +113,7 @@ def apply_policy(
         parties = [{"party_type": str(rule["party_type"]), "party_id": str(rule["party_id"])}]
 
     cause_code = str(rule["cause_code"])
+    confidence = calculate_confidence(issue, order_data, payment_data, delivery_data)
     evidence_ids = [f"policy:{cause_code}"]
     if issue == "late_delivery_seller":
         evidence_ids = [
@@ -79,7 +125,7 @@ def apply_policy(
         "assessment": {
             "primary_issue": issue,
             "case_status": "action_required" if refund > 0 else "no_action",
-            "confidence": DECISION_CONFIDENCE,
+            "confidence": confidence,
         },
         "root_cause_analysis": {
             "ranked_causes": [{"cause_code": cause_code, "rank": 1}],
