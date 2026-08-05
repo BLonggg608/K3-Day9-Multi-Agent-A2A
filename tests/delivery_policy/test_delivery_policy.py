@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from src.delivery_policy.delivery_agent import DeliveryAgent, analyze_delivery
-from src.delivery_policy.policy_agent import apply_policy
+from src.delivery_policy.policy_agent import apply_policy, calculate_confidence
 
 
 BASE_ORDER = {
@@ -99,6 +99,15 @@ class PolicyPriorityTests(unittest.TestCase):
         order = dict(BASE_ORDER, order_delivered_customer_date=None, order_estimated_delivery_date=None)
         with self.assertRaisesRegex(ValueError, "no EC_POLICY_V1 rule matched"):
             self.decide(order=order)
+
+    def test_confidence_is_reduced_when_late_delivery_facts_are_incomplete(self):
+        delivery = analyze_delivery(BASE_ORDER)
+        delivery["has_carrier_date"] = False
+        delivery["has_shipping_limits"] = False
+        confidence = calculate_confidence(
+            "late_delivery_logistics", BASE_ORDER, BASE_PAYMENT, delivery
+        )
+        self.assertEqual(confidence, 0.8)
 
 
 if __name__ == "__main__":
