@@ -39,7 +39,11 @@ def test_verifier_agent_reports_ok_true_for_matching_ids():
             "ranked_causes": [{"cause_code": "DELIVERY_WITHIN_ESTIMATE", "rank": 1}],
             "responsible_parties": [],
         },
-        "evidence_ids": [f"order:{real_order_id}", f"item:{real_item_id}"],
+        "evidence_ids": [
+            f"order:{real_order_id}",
+            f"item:{real_item_id}",
+            "policy:DELIVERY_WITHIN_ESTIMATE",
+        ],
         "financial_resolution": {
             "currency": "BRL",
             "item_total_brl": 0.0,

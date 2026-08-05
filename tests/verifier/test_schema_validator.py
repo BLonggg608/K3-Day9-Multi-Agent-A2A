@@ -94,6 +94,13 @@ def test_evidence_id_not_in_source_data():
     assert any("unknown order" in e for e in errors)
 
 
+def test_policy_evidence_must_match_ranked_causes():
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["evidence_ids"].append("policy:DELIVERY_WITHIN_ESTIMATE")
+    errors = validate_output(output, SOURCE_DATA)
+    assert any("not a ranked cause" in e for e in errors)
+
+
 def test_affected_entity_not_in_source_data():
     output = copy.deepcopy(VALID_OUTPUT)
     output["affected_entities"]["seller_ids"] = ["fake-seller"]

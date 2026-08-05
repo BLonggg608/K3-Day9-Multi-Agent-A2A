@@ -97,7 +97,9 @@ def analyze_delivery(order_data: dict[str, Any]) -> dict[str, Any]:
         "delivery_classification": classification,
         "late_handoff_seller_ids": violating_sellers[:5],
         "root_cause_code": cause_code,
-        "evidence_ids": [f"policy:{cause_code}"] if cause_code else [],
+        # Delivery classification is provisional. Only PolicyAgent may emit
+        # policy:<root_cause_code> after applying global rule precedence.
+        "evidence_ids": [],
     }
 
 

@@ -130,10 +130,30 @@ def validate_output(output: dict[str, Any], source_data: dict[str, Any]) -> list
     errors += _check_enums_and_ranges(output)
     errors += _check_limits(output)
     errors += _check_evidence_ids(output, source_data)
+    errors += _check_policy_evidence_consistency(output)
     errors += _check_affected_entities_exist(output, source_data)
     errors += _check_financial_consistency(output)
     errors += _check_policy_consistency(output)
     errors += _check_uniqueness_and_relationships(output)
+    return errors
+
+
+def _check_policy_evidence_consistency(output: dict[str, Any]) -> list[str]:
+    ranked_codes = {
+        cause["cause_code"]
+        for cause in output["root_cause_analysis"]["ranked_causes"]
+        if isinstance(cause, dict) and cause.get("cause_code")
+    }
+    evidence_codes = {
+        evidence_id.split(":", 1)[1]
+        for evidence_id in output["evidence_ids"]
+        if isinstance(evidence_id, str) and evidence_id.startswith("policy:")
+    }
+    errors: list[str] = []
+    for code in sorted(evidence_codes - ranked_codes):
+        errors.append(f"policy evidence '{code}' is not a ranked cause")
+    for code in sorted(ranked_codes - evidence_codes):
+        errors.append(f"ranked cause '{code}' has no policy evidence")
     return errors
 
 
