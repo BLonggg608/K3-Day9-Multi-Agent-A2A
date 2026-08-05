@@ -129,3 +129,40 @@ def test_money_not_rounded():
     output["financial_resolution"]["freight_total_brl"] = 15.006
     errors = validate_output(output, SOURCE_DATA)
     assert any("not rounded" in e for e in errors)
+
+
+@pytest.mark.parametrize("value", [-1.0, float("nan"), float("inf")])
+def test_money_must_be_nonnegative_and_finite(value):
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["financial_resolution"]["item_total_brl"] = value
+    assert validate_output(output, SOURCE_DATA)
+
+
+def test_primary_issue_sections_must_agree():
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["resolution_actions"] = ["issue_full_refund"]
+    errors = validate_output(output, SOURCE_DATA)
+    assert any("requires resolution_actions" in e for e in errors)
+
+
+def test_ranked_causes_must_be_consecutive():
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["root_cause_analysis"]["ranked_causes"][0]["rank"] = 2
+    errors = validate_output(output, SOURCE_DATA)
+    assert any("consecutive" in e for e in errors)
+
+
+def test_entities_and_evidence_must_be_unique():
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["affected_entities"]["seller_ids"].append("s1")
+    output["evidence_ids"].append("seller:s1")
+    errors = validate_output(output, SOURCE_DATA)
+    assert any("seller_ids contains duplicates" in e for e in errors)
+    assert any("evidence_ids contains duplicates" in e for e in errors)
+
+
+def test_responsible_seller_must_be_affected():
+    output = copy.deepcopy(VALID_OUTPUT)
+    output["affected_entities"]["seller_ids"] = []
+    errors = validate_output(output, SOURCE_DATA)
+    assert any("not an affected seller" in e for e in errors)

@@ -110,8 +110,11 @@ class DeliveryAgent:
         try:
             order_data = _result_data(context, ("order_seller", "order", "order_agent"))
             data = analyze_delivery(order_data)
-            evidence = data.pop("evidence_ids")
-            return AgentResult(agent=self.name, data=data, evidence_ids=evidence)
+            # Delivery classification is an intermediate fact. Only PolicyAgent
+            # owns the final policy:* evidence after applying global precedence
+            # (for example, valid split payment can outrank an on-time delivery).
+            data.pop("evidence_ids")
+            return AgentResult(agent=self.name, data=data, evidence_ids=[])
         except (KeyError, ValueError) as exc:
             return AgentResult(agent=self.name, ok=False, errors=[str(exc)])
 

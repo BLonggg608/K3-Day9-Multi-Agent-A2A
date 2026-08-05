@@ -7,6 +7,7 @@ which keeps this module trivial to unit test.
 
 from __future__ import annotations
 
+import math
 import re
 from typing import Any
 
@@ -41,6 +42,30 @@ PARTY_TYPES = {"platform", "seller", "logistics_provider"}
 
 # action -> expected refund basis; None means refund must be 0.
 _ZERO_REFUND_ACTIONS = {"explain_valid_split_payment", "reject_late_refund"}
+
+_ISSUE_CONTRACTS = {
+    "canceled_order_paid": (
+        "ORDER_CANCELED_AFTER_PAYMENT", "issue_full_refund", "platform", "action_required"
+    ),
+    "unavailable_order_paid": (
+        "ORDER_UNAVAILABLE_AFTER_PAYMENT", "issue_full_refund", "platform", "action_required"
+    ),
+    "late_delivery_seller": (
+        "SELLER_HANDOFF_AFTER_LIMIT", "refund_freight", "seller", "action_required"
+    ),
+    "late_delivery_logistics": (
+        "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "refund_freight",
+        "logistics_provider",
+        "action_required",
+    ),
+    "valid_split_payment": (
+        "MULTIPLE_PAYMENTS_RECONCILED", "explain_valid_split_payment", None, "no_action"
+    ),
+    "unsupported_late_claim": (
+        "DELIVERY_WITHIN_ESTIMATE", "reject_late_refund", None, "no_action"
+    ),
+}
 
 _ENTITY_LIMIT = 5
 _EVIDENCE_LIMIT = 10
@@ -107,6 +132,8 @@ def validate_output(output: dict[str, Any], source_data: dict[str, Any]) -> list
     errors += _check_evidence_ids(output, source_data)
     errors += _check_affected_entities_exist(output, source_data)
     errors += _check_financial_consistency(output)
+    errors += _check_policy_consistency(output)
+    errors += _check_uniqueness_and_relationships(output)
     return errors
 
 
@@ -167,7 +194,11 @@ def _check_enums_and_ranges(output: dict[str, Any]) -> list[str]:
         "recommended_refund_brl",
     ):
         value = output["financial_resolution"][money_key]
-        if round(value, 2) != value:
+        if not math.isfinite(value):
+            errors.append(f"financial_resolution.{money_key} must be finite")
+        elif value < 0:
+            errors.append(f"financial_resolution.{money_key} cannot be negative")
+        elif round(value, 2) != value:
             errors.append(f"financial_resolution.{money_key} not rounded to 2 decimals")
 
     return errors
@@ -270,4 +301,62 @@ def _check_financial_consistency(output: dict[str, Any]) -> list[str]:
     if output["assessment"]["case_status"] == "no_action" and refund != 0:
         errors.append("recommended_refund_brl must be 0 when case_status is no_action")
 
+    return errors
+
+
+def _check_policy_consistency(output: dict[str, Any]) -> list[str]:
+    """Ensure all output sections describe the same EC_POLICY_V1 decision."""
+    issue = output["assessment"]["primary_issue"]
+    contract = _ISSUE_CONTRACTS.get(issue)
+    if contract is None:
+        return []  # The enum check already reports the unknown issue.
+
+    expected_cause, expected_action, expected_party, expected_status = contract
+    errors: list[str] = []
+    causes = output["root_cause_analysis"]["ranked_causes"]
+    actions = output["resolution_actions"]
+    parties = output["root_cause_analysis"]["responsible_parties"]
+
+    if not causes or causes[0].get("cause_code") != expected_cause:
+        errors.append(f"primary_issue '{issue}' requires cause_code '{expected_cause}' at rank 1")
+    if actions != [expected_action]:
+        errors.append(f"primary_issue '{issue}' requires resolution_actions ['{expected_action}']")
+    if output["assessment"]["case_status"] != expected_status:
+        errors.append(f"primary_issue '{issue}' requires case_status '{expected_status}'")
+
+    party_types = [party.get("party_type") for party in parties if isinstance(party, dict)]
+    if expected_party is None and parties:
+        errors.append(f"primary_issue '{issue}' must not assign a responsible party")
+    elif expected_party is not None and expected_party not in party_types:
+        errors.append(f"primary_issue '{issue}' requires party_type '{expected_party}'")
+    return errors
+
+
+def _check_uniqueness_and_relationships(output: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    entities = output["affected_entities"]
+    for key in ("order_ids", "item_ids", "seller_ids", "payment_ids"):
+        if len(entities[key]) != len(set(entities[key])):
+            errors.append(f"affected_entities.{key} contains duplicates")
+    if len(output["evidence_ids"]) != len(set(output["evidence_ids"])):
+        errors.append("evidence_ids contains duplicates")
+
+    causes = output["root_cause_analysis"]["ranked_causes"]
+    ranks = [cause.get("rank") for cause in causes if isinstance(cause, dict)]
+    if ranks != list(range(1, len(causes) + 1)):
+        errors.append("ranked_causes ranks must be unique and consecutive from 1")
+
+    order_ids = set(entities["order_ids"])
+    for key in ("item_ids", "payment_ids"):
+        for entity_id in entities[key]:
+            order_id = entity_id.split(":", 1)[0]
+            if order_id not in order_ids:
+                errors.append(f"affected_entities.{key} id '{entity_id}' belongs to another order")
+
+    seller_ids = set(entities["seller_ids"])
+    for party in output["root_cause_analysis"]["responsible_parties"]:
+        if isinstance(party, dict) and party.get("party_type") == "seller":
+            party_id = party.get("party_id")
+            if party_id not in seller_ids:
+                errors.append(f"responsible seller '{party_id}' is not an affected seller")
     return errors

@@ -2,8 +2,10 @@ import pandas as pd
 from pathlib import Path
 from typing import List
 
+DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
+
 class OrderDataStore:
-    def __init__(self, data_dir: str = "data"):
+    def __init__(self, data_dir: str | Path = DEFAULT_DATA_DIR):
         data_path = Path(data_dir)
         self.orders = pd.read_csv(data_path / "olist_orders_dataset.csv")
         self.items = pd.read_csv(data_path / "olist_order_items_dataset.csv")

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from src.delivery_policy.delivery_agent import analyze_delivery
+from src.delivery_policy.delivery_agent import DeliveryAgent, analyze_delivery
 from src.delivery_policy.policy_agent import apply_policy
 
 
@@ -40,6 +40,20 @@ class DeliveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "invalid order_delivered_customer_date"):
             analyze_delivery(dict(BASE_ORDER, order_delivered_customer_date="not-a-date"))
 
+    def test_delivery_agent_does_not_emit_preliminary_policy_evidence(self):
+        agent = DeliveryAgent()
+        context = {
+            "results": {
+                "order_seller": {
+                    "ok": True,
+                    "data": BASE_ORDER,
+                }
+            }
+        }
+        result = agent.analyze(context)
+        self.assertTrue(result.ok)
+        self.assertEqual(result.evidence_ids, [])
+
 
 class PolicyPriorityTests(unittest.TestCase):
     def decide(self, order=None, payment=None, delivery=None):
@@ -60,10 +74,12 @@ class PolicyPriorityTests(unittest.TestCase):
         result = self.decide(order=order, payment=payment)
         self.assertEqual(result["assessment"]["primary_issue"], "late_delivery_seller")
         self.assertEqual(result["root_cause_analysis"]["responsible_parties"][0]["party_id"], "SELLER_1")
+        self.assertIn("seller:SELLER_1", result["evidence_ids"])
 
     def test_late_delivery_logistics(self):
         result = self.decide()
         self.assertEqual(result["assessment"]["primary_issue"], "late_delivery_logistics")
+        self.assertEqual(result["assessment"]["confidence"], 1.0)
         self.assertEqual(result["financial_resolution"]["recommended_refund_brl"], 15.0)
 
     def test_valid_split_payment(self):

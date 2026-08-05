@@ -7,7 +7,13 @@ from typing import Any
 from src.shared.contracts import AgentResult
 
 from .delivery_agent import _result_data
-from .rules import ISSUE_RULES, POLICY_VERSION, money, payment_matches_order
+from .rules import (
+    DECISION_CONFIDENCE,
+    ISSUE_RULES,
+    POLICY_VERSION,
+    money,
+    payment_matches_order,
+)
 
 
 def _select_issue(
@@ -62,11 +68,18 @@ def apply_policy(
         parties = [{"party_type": str(rule["party_type"]), "party_id": str(rule["party_id"])}]
 
     cause_code = str(rule["cause_code"])
+    evidence_ids = [f"policy:{cause_code}"]
+    if issue == "late_delivery_seller":
+        evidence_ids = [
+            *(f"seller:{party['party_id']}" for party in parties),
+            *evidence_ids,
+        ]
+
     return {
         "assessment": {
             "primary_issue": issue,
             "case_status": "action_required" if refund > 0 else "no_action",
-            "confidence": 1.0,
+            "confidence": DECISION_CONFIDENCE,
         },
         "root_cause_analysis": {
             "ranked_causes": [{"cause_code": cause_code, "rank": 1}],
@@ -80,7 +93,7 @@ def apply_policy(
             "recommended_refund_brl": money(refund),
         },
         "resolution_actions": [action],
-        "evidence_ids": [f"policy:{cause_code}"],
+        "evidence_ids": evidence_ids,
     }
 
 

@@ -77,8 +77,6 @@ class OrderSellerAgent:
             items_df_copy['shipping_limit_date'] = items_df_copy['shipping_limit_date'].dt.strftime('%Y-%m-%d %H:%M:%S')
             items = items_df_copy.to_dict(orient="records")
             
-            for seller_id in seller_ids:
-                evidence_ids.append(f"seller:{seller_id}")
             for _, item_row in items_df.iterrows():
                 evidence_ids.append(
                     f"item:{order_id}:{int(item_row['order_item_id'])}"

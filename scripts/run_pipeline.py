@@ -27,6 +27,7 @@ sys.path.insert(0, str(ROOT))
 
 from src.coordinator.agent import Coordinator  # noqa: E402
 from src.shared.contracts import Agent  # noqa: E402
+from src.shared.llm_client import OpenAIAuditClient  # noqa: E402
 from src.verifier.agent import VerifierAgent  # noqa: E402
 
 INPUT_DIR = ROOT / "input"
@@ -47,8 +48,20 @@ def _build_domain_agents() -> list[Agent]:
     for module_path, class_name, owner in _AGENT_SPECS:
         try:
             module = importlib.import_module(module_path)
+        except ModuleNotFoundError as exc:
+            if exc.name == module_path:
+                missing.append(f"{module_path}.{class_name} (owned by {owner})")
+                continue
+            raise SystemExit(
+                f"Cannot import {module_path}: dependency {exc.name!r} is missing. "
+                "Install dependencies with: python -m pip install -r requirements.txt"
+            ) from exc
+        except ImportError as exc:
+            raise SystemExit(f"Cannot import {module_path}: {exc}") from exc
+
+        try:
             agent_cls = getattr(module, class_name)
-        except (ImportError, AttributeError):
+        except AttributeError:
             missing.append(f"{module_path}.{class_name} (owned by {owner})")
             continue
         agents.append(agent_cls())
@@ -65,7 +78,12 @@ def run_pipeline(
     input_dir: Path = INPUT_DIR, output_dir: Path = OUTPUT_DIR, trace_path: Path = TRACE_PATH
 ) -> None:
     domain_agents = _build_domain_agents()
-    coordinator = Coordinator(agents=domain_agents, verifier=VerifierAgent())
+    llm_client = OpenAIAuditClient()
+    coordinator = Coordinator(
+        agents=domain_agents,
+        verifier=VerifierAgent(),
+        llm_client=llm_client,
+    )
 
     output_dir.mkdir(parents=True, exist_ok=True)
     trace_path.parent.mkdir(parents=True, exist_ok=True)
@@ -81,6 +99,16 @@ def run_pipeline(
             output = coordinator.process_case(case)
             duration_ms = round((time.time() - started) * 1000, 2)
 
+            if coordinator.last_llm_error is not None:
+                raise RuntimeError(
+                    f"LLM audit failed for {case.get('case_id')}: "
+                    f"{coordinator.last_llm_error}"
+                )
+            if not coordinator.last_llm_rationale:
+                raise RuntimeError(
+                    f"LLM audit produced no rationale for {case.get('case_id')}"
+                )
+
             (output_dir / case_path.name).write_text(
                 json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8"
             )
@@ -92,6 +120,13 @@ def run_pipeline(
                         "duration_ms": duration_ms,
                         "ok": "error" not in output,
                         "verification_errors": output.get("_verification_errors", []),
+                        "llm": {
+                            "provider": llm_client.provider,
+                            "model": llm_client.model,
+                            "parameter_size": llm_client.parameter_size,
+                            "called": True,
+                            "rationale": coordinator.last_llm_rationale,
+                        },
                     },
                     ensure_ascii=False,
                 )

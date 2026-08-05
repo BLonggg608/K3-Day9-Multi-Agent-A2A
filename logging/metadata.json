@@ -1,12 +1,15 @@
 {
-  "framework": "Python stdlib + pandas (no agent/LLM framework); Coordinator uses manual dependency injection per architecture.md",
-  "runtime": "local",
+  "framework": "Python stdlib + pandas + OpenAI Python SDK; Coordinator uses manual dependency injection per architecture.md",
+  "runtime": "local orchestration with OpenAI API inference",
   "python_version": "3.14",
   "policy_version": "EC_POLICY_V1",
   "agents": {
     "coordinator": {
       "owner": "Thanh vien 1",
-      "model": "none (rule-based orchestration, no LLM call)"
+      "model": "gpt-4o-mini",
+      "provider": "OpenAI",
+      "parameter_size": "<=10B (accepted by course coach)",
+      "usage": "one audit-rationale API call per case; cannot change deterministic output"
     },
     "order_seller": {
       "owner": "Thanh vien 2",
