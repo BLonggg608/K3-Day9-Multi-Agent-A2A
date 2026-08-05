@@ -4,6 +4,15 @@ import pandas as pd
 from src.shared.contracts import AgentResult
 from src.order_seller.queries import OrderDataStore
 
+
+def _serialize_timestamp(value: Any) -> str | None:
+    if pd.isna(value):
+        return None
+    if hasattr(value, "isoformat"):
+        return value.isoformat(sep=" ")
+    return str(value)
+
+
 class OrderSellerAgent:
     name: str = "order_seller"
     
@@ -81,6 +90,15 @@ class OrderSellerAgent:
         data = {
             "order_id": order_id,
             "order_status": order_status,
+            "order_delivered_customer_date": _serialize_timestamp(
+                order_row.get("order_delivered_customer_date")
+            ),
+            "order_estimated_delivery_date": _serialize_timestamp(
+                order_row.get("order_estimated_delivery_date")
+            ),
+            "order_delivered_carrier_date": _serialize_timestamp(
+                order_delivered_carrier_date
+            ),
             "items": items,
             "seller_ids": seller_ids,
             "item_total_brl": item_total_brl,

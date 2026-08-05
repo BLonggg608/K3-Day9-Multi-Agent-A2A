@@ -40,6 +40,7 @@ def test_analyze_normal_order():
     assert "item:ord1:1" in res.data["evidence_ids"]
     assert "seller:sel1" in res.data["evidence_ids"]
     assert res.data["violating_seller_ids"] == ["sel1"]
+    assert res.data["order_delivered_carrier_date"] == "2017-10-06 00:00:00"
 
 def test_analyze_canceled_order():
     agent = OrderSellerAgent(data_store=MockDataStore())

@@ -25,7 +25,16 @@ def _timestamp(value: Any, field: str) -> datetime | None:
 
 def _precomputed_violations(order_data: dict[str, Any]) -> list[str]:
     raw = order_data.get("seller_handoff_violations", []) or []
+    explicit_ids = order_data.get("violating_seller_ids", []) or []
     seller_ids: list[str] = []
+    if isinstance(explicit_ids, (list, tuple, set)):
+        for seller_id in explicit_ids:
+            if seller_id and str(seller_id) not in seller_ids:
+                seller_ids.append(str(seller_id))
+    if isinstance(raw, bool):
+        return seller_ids
+    if isinstance(raw, str):
+        raw = [raw]
     for entry in raw:
         seller_id = entry.get("seller_id") if isinstance(entry, dict) else entry
         if seller_id and str(seller_id) not in seller_ids:
