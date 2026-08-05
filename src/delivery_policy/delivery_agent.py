@@ -64,11 +64,15 @@ def analyze_delivery(order_data: dict[str, Any]) -> dict[str, Any]:
         "order_delivered_carrier_date",
     )
 
+    items = order_data.get("items", []) or []
     violating_sellers = _precomputed_violations(order_data)
-    for item in order_data.get("items", []) or []:
+    shipping_limit_count = 0
+    for item in items:
         if not isinstance(item, dict):
             continue
         limit = _timestamp(item.get("shipping_limit_date"), "shipping_limit_date")
+        if limit is not None:
+            shipping_limit_count += 1
         seller_id = item.get("seller_id")
         if carrier is not None and limit is not None and carrier > limit and seller_id:
             seller_id = str(seller_id)
@@ -94,6 +98,9 @@ def analyze_delivery(order_data: dict[str, Any]) -> dict[str, Any]:
     return {
         "is_late_delivery": is_late,
         "is_within_estimate": within_estimate,
+        "has_delivery_dates": has_delivery_dates,
+        "has_carrier_date": carrier is not None,
+        "has_shipping_limits": bool(items) and shipping_limit_count == len(items),
         "delivery_classification": classification,
         "late_handoff_seller_ids": violating_sellers[:5],
         "root_cause_code": cause_code,
