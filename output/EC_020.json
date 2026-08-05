@@ -1,0 +1,104 @@
+{
+  "case_id": "EC_020",
+  "order_id": "96087ef44ca9abdbc4c372a3dd3c859f",
+  "order_status": "delivered",
+  "order_delivered_customer_date": "2017-11-21 19:11:35",
+  "order_estimated_delivery_date": "2017-12-01 00:00:00",
+  "order_delivered_carrier_date": "2017-11-20 20:05:11",
+  "items": [
+    {
+      "order_id": "96087ef44ca9abdbc4c372a3dd3c859f",
+      "order_item_id": 1,
+      "product_id": "c24f692e0f20f854c24c31517610ba7c",
+      "seller_id": "7813ea3ebd9411dc600b4dd01f7a97b9",
+      "shipping_limit_date": "2017-11-23 14:15:21",
+      "price": 260.0,
+      "freight_value": 9.08
+    }
+  ],
+  "seller_ids": [
+    "7813ea3ebd9411dc600b4dd01f7a97b9"
+  ],
+  "item_total_brl": 260.0,
+  "freight_total_brl": 9.08,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:96087ef44ca9abdbc4c372a3dd3c859f",
+    "seller:7813ea3ebd9411dc600b4dd01f7a97b9",
+    "item:96087ef44ca9abdbc4c372a3dd3c859f:1",
+    "payment:96087ef44ca9abdbc4c372a3dd3c859f:1",
+    "payment:96087ef44ca9abdbc4c372a3dd3c859f:2",
+    "policy:DELIVERY_WITHIN_ESTIMATE",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+  ],
+  "payment_total_brl": 269.08,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 1,
+      "payment_value": 187.1
+    },
+    {
+      "payment_sequential": 2,
+      "payment_type": "voucher",
+      "payment_installments": 1,
+      "payment_value": 81.98
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": true,
+  "expected_total_brl": 269.08,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": true,
+  "payment_ids": [
+    "96087ef44ca9abdbc4c372a3dd3c859f:1",
+    "96087ef44ca9abdbc4c372a3dd3c859f:2"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": true,
+  "delivery_classification": "unsupported_late_claim",
+  "late_handoff_seller_ids": [],
+  "root_cause_code": "DELIVERY_WITHIN_ESTIMATE",
+  "assessment": {
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 260.0,
+    "freight_total_brl": 9.08,
+    "payment_total_brl": 269.08,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "explain_valid_split_payment"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "96087ef44ca9abdbc4c372a3dd3c859f"
+    ],
+    "item_ids": [
+      "96087ef44ca9abdbc4c372a3dd3c859f:1"
+    ],
+    "seller_ids": [
+      "7813ea3ebd9411dc600b4dd01f7a97b9"
+    ],
+    "payment_ids": [
+      "96087ef44ca9abdbc4c372a3dd3c859f:1",
+      "96087ef44ca9abdbc4c372a3dd3c859f:2"
+    ]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "case_id": "EC_042",
+  "order_id": "8a5fc33c79bf3f4d9bbcc3dceb6b67c4",
+  "order_status": "delivered",
+  "order_delivered_customer_date": "2018-08-18 12:36:48",
+  "order_estimated_delivery_date": "2018-08-23 00:00:00",
+  "order_delivered_carrier_date": "2018-08-13 15:35:00",
+  "items": [
+    {
+      "order_id": "8a5fc33c79bf3f4d9bbcc3dceb6b67c4",
+      "order_item_id": 1,
+      "product_id": "733162823b9a1dbc958b0988d32229da",
+      "seller_id": "6bbcb8924baf70b7fe2fe2097e8cd407",
+      "shipping_limit_date": "2018-08-14 15:45:36",
+      "price": 231.2,
+      "freight_value": 38.53
+    }
+  ],
+  "seller_ids": [
+    "6bbcb8924baf70b7fe2fe2097e8cd407"
+  ],
+  "item_total_brl": 231.2,
+  "freight_total_brl": 38.53,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:8a5fc33c79bf3f4d9bbcc3dceb6b67c4",
+    "seller:6bbcb8924baf70b7fe2fe2097e8cd407",
+    "item:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
+    "payment:8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1",
+    "policy:DELIVERY_WITHIN_ESTIMATE"
+  ],
+  "payment_total_brl": 269.73,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 5,
+      "payment_value": 269.73
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": false,
+  "expected_total_brl": 269.73,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": false,
+  "payment_ids": [
+    "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": true,
+  "delivery_classification": "unsupported_late_claim",
+  "late_handoff_seller_ids": [],
+  "root_cause_code": "DELIVERY_WITHIN_ESTIMATE",
+  "assessment": {
+    "primary_issue": "unsupported_late_claim",
+    "case_status": "no_action",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "DELIVERY_WITHIN_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 231.2,
+    "freight_total_brl": 38.53,
+    "payment_total_brl": 269.73,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "reject_late_refund"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4"
+    ],
+    "item_ids": [
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
+    ],
+    "seller_ids": [
+      "6bbcb8924baf70b7fe2fe2097e8cd407"
+    ],
+    "payment_ids": [
+      "8a5fc33c79bf3f4d9bbcc3dceb6b67c4:1"
+    ]
+  }
+}

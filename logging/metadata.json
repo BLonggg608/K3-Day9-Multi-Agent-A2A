@@ -1,0 +1,28 @@
+{
+  "framework": "Python stdlib + pandas (no agent/LLM framework); Coordinator uses manual dependency injection per architecture.md",
+  "runtime": "local",
+  "python_version": "3.14",
+  "policy_version": "EC_POLICY_V1",
+  "agents": {
+    "coordinator": {
+      "owner": "Thanh vien 1",
+      "model": "none (rule-based orchestration, no LLM call)"
+    },
+    "order_seller": {
+      "owner": "Thanh vien 2",
+      "model": "none (rule-based lookups over orders/order_items/sellers CSVs via pandas, no LLM call)"
+    },
+    "payment": {
+      "owner": "Thanh vien 3",
+      "model": "none (rule-based reconciliation over order_payments CSV via pandas, no LLM call)"
+    },
+    "delivery_policy": {
+      "owner": "Thanh vien 4",
+      "model": "none (rule-based EC_POLICY_V1 application, no LLM call)"
+    },
+    "verifier": {
+      "owner": "Thanh vien 5",
+      "model": "none (rule-based schema/consistency validation, no LLM call)"
+    }
+  }
+}

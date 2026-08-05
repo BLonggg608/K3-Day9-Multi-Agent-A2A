@@ -1,0 +1,126 @@
+{
+  "case_id": "EC_025",
+  "order_id": "e06ff711ddcab05c3651a9b1bb003950",
+  "order_status": "delivered",
+  "order_delivered_customer_date": "2017-03-14 15:47:49",
+  "order_estimated_delivery_date": "2017-03-23 00:00:00",
+  "order_delivered_carrier_date": "2017-03-03 14:09:15",
+  "items": [
+    {
+      "order_id": "e06ff711ddcab05c3651a9b1bb003950",
+      "order_item_id": 1,
+      "product_id": "56b81eaffe3c2e7e54f3bdf2a935164f",
+      "seller_id": "391fc6631aebcf3004804e51b40bcf1e",
+      "shipping_limit_date": "2017-03-08 12:05:49",
+      "price": 44.35,
+      "freight_value": 17.09
+    },
+    {
+      "order_id": "e06ff711ddcab05c3651a9b1bb003950",
+      "order_item_id": 2,
+      "product_id": "56b81eaffe3c2e7e54f3bdf2a935164f",
+      "seller_id": "391fc6631aebcf3004804e51b40bcf1e",
+      "shipping_limit_date": "2017-03-08 12:05:49",
+      "price": 44.35,
+      "freight_value": 17.09
+    },
+    {
+      "order_id": "e06ff711ddcab05c3651a9b1bb003950",
+      "order_item_id": 3,
+      "product_id": "56b81eaffe3c2e7e54f3bdf2a935164f",
+      "seller_id": "391fc6631aebcf3004804e51b40bcf1e",
+      "shipping_limit_date": "2017-03-08 12:05:49",
+      "price": 44.35,
+      "freight_value": 17.09
+    }
+  ],
+  "seller_ids": [
+    "391fc6631aebcf3004804e51b40bcf1e"
+  ],
+  "item_total_brl": 133.05,
+  "freight_total_brl": 51.27,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:e06ff711ddcab05c3651a9b1bb003950",
+    "seller:391fc6631aebcf3004804e51b40bcf1e",
+    "item:e06ff711ddcab05c3651a9b1bb003950:1",
+    "item:e06ff711ddcab05c3651a9b1bb003950:2",
+    "item:e06ff711ddcab05c3651a9b1bb003950:3",
+    "payment:e06ff711ddcab05c3651a9b1bb003950:1",
+    "payment:e06ff711ddcab05c3651a9b1bb003950:2",
+    "policy:DELIVERY_WITHIN_ESTIMATE",
+    "policy:MULTIPLE_PAYMENTS_RECONCILED"
+  ],
+  "payment_total_brl": 184.32,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 12,
+      "payment_value": 138.28
+    },
+    {
+      "payment_sequential": 2,
+      "payment_type": "voucher",
+      "payment_installments": 1,
+      "payment_value": 46.04
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": true,
+  "expected_total_brl": 184.32,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": true,
+  "payment_ids": [
+    "e06ff711ddcab05c3651a9b1bb003950:1",
+    "e06ff711ddcab05c3651a9b1bb003950:2"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": true,
+  "delivery_classification": "unsupported_late_claim",
+  "late_handoff_seller_ids": [],
+  "root_cause_code": "DELIVERY_WITHIN_ESTIMATE",
+  "assessment": {
+    "primary_issue": "valid_split_payment",
+    "case_status": "no_action",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "MULTIPLE_PAYMENTS_RECONCILED",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 133.05,
+    "freight_total_brl": 51.27,
+    "payment_total_brl": 184.32,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "explain_valid_split_payment"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "e06ff711ddcab05c3651a9b1bb003950"
+    ],
+    "item_ids": [
+      "e06ff711ddcab05c3651a9b1bb003950:1",
+      "e06ff711ddcab05c3651a9b1bb003950:2",
+      "e06ff711ddcab05c3651a9b1bb003950:3"
+    ],
+    "seller_ids": [
+      "391fc6631aebcf3004804e51b40bcf1e"
+    ],
+    "payment_ids": [
+      "e06ff711ddcab05c3651a9b1bb003950:1",
+      "e06ff711ddcab05c3651a9b1bb003950:2"
+    ]
+  }
+}

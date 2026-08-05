@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"d:/hocHanh/VinUni/K3-Day9-Multi-Agent-A2A\" && touch .env && ls -la .env)"
+    ],
+    "additionalDirectories": [
+      "d:\\hocHanh\\VinUni\\K3-Day9-Multi-Agent-A2A"
+    ]
+  }
+}

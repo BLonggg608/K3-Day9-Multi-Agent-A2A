@@ -1,0 +1,81 @@
+{
+  "case_id": "EC_011",
+  "order_id": "2636a02ee7de9590df86a4c24b739c49",
+  "order_status": "unavailable",
+  "order_delivered_customer_date": null,
+  "order_estimated_delivery_date": "2017-07-27 00:00:00",
+  "order_delivered_carrier_date": null,
+  "items": [],
+  "seller_ids": [],
+  "item_total_brl": 0.0,
+  "freight_total_brl": 0.0,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:2636a02ee7de9590df86a4c24b739c49",
+    "payment:2636a02ee7de9590df86a4c24b739c49:1",
+    "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
+  ],
+  "payment_total_brl": 142.09,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 3,
+      "payment_value": 142.09
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": false,
+  "expected_total_brl": 0.0,
+  "payment_difference_brl": 142.09,
+  "is_payment_reconciled": false,
+  "is_valid_split_payment": false,
+  "payment_ids": [
+    "2636a02ee7de9590df86a4c24b739c49:1"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": false,
+  "delivery_classification": null,
+  "late_handoff_seller_ids": [],
+  "root_cause_code": null,
+  "assessment": {
+    "primary_issue": "unavailable_order_paid",
+    "case_status": "action_required",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "ORDER_UNAVAILABLE_AFTER_PAYMENT",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
+      }
+    ]
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 0.0,
+    "freight_total_brl": 0.0,
+    "payment_total_brl": 142.09,
+    "recommended_refund_brl": 142.09
+  },
+  "resolution_actions": [
+    "issue_full_refund"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "2636a02ee7de9590df86a4c24b739c49"
+    ],
+    "item_ids": [],
+    "seller_ids": [],
+    "payment_ids": [
+      "2636a02ee7de9590df86a4c24b739c49:1"
+    ]
+  }
+}

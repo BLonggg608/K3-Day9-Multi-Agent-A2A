@@ -1,0 +1,99 @@
+{
+  "case_id": "EC_016",
+  "order_id": "a88edef387e2a7e457695664bf0ddfc0",
+  "order_status": "delivered",
+  "order_delivered_customer_date": "2017-04-22 09:22:27",
+  "order_estimated_delivery_date": "2017-04-12 00:00:00",
+  "order_delivered_carrier_date": "2017-03-24 12:25:30",
+  "items": [
+    {
+      "order_id": "a88edef387e2a7e457695664bf0ddfc0",
+      "order_item_id": 1,
+      "product_id": "bf84efc59aa20236fc3cb0d7a9e7ca44",
+      "seller_id": "9646c3513289980f17226a2fc4720dbd",
+      "shipping_limit_date": "2017-03-30 01:31:50",
+      "price": 38.0,
+      "freight_value": 14.52
+    }
+  ],
+  "seller_ids": [
+    "9646c3513289980f17226a2fc4720dbd"
+  ],
+  "item_total_brl": 38.0,
+  "freight_total_brl": 14.52,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:a88edef387e2a7e457695664bf0ddfc0",
+    "seller:9646c3513289980f17226a2fc4720dbd",
+    "item:a88edef387e2a7e457695664bf0ddfc0:1",
+    "payment:a88edef387e2a7e457695664bf0ddfc0:1",
+    "policy:CARRIER_DELIVERED_AFTER_ESTIMATE"
+  ],
+  "payment_total_brl": 52.52,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "boleto",
+      "payment_installments": 1,
+      "payment_value": 52.52
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": false,
+  "expected_total_brl": 52.52,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": false,
+  "payment_ids": [
+    "a88edef387e2a7e457695664bf0ddfc0:1"
+  ],
+  "is_late_delivery": true,
+  "is_within_estimate": false,
+  "delivery_classification": "late_delivery_logistics",
+  "late_handoff_seller_ids": [],
+  "root_cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+  "assessment": {
+    "primary_issue": "late_delivery_logistics",
+    "case_status": "action_required",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "CARRIER_DELIVERED_AFTER_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "logistics_provider",
+        "party_id": "LOGISTICS_PROVIDER"
+      }
+    ]
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 38.0,
+    "freight_total_brl": 14.52,
+    "payment_total_brl": 52.52,
+    "recommended_refund_brl": 14.52
+  },
+  "resolution_actions": [
+    "refund_freight"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "a88edef387e2a7e457695664bf0ddfc0"
+    ],
+    "item_ids": [
+      "a88edef387e2a7e457695664bf0ddfc0:1"
+    ],
+    "seller_ids": [
+      "9646c3513289980f17226a2fc4720dbd"
+    ],
+    "payment_ids": [
+      "a88edef387e2a7e457695664bf0ddfc0:1"
+    ]
+  }
+}

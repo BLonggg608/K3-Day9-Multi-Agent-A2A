@@ -1,0 +1,99 @@
+{
+  "case_id": "EC_003",
+  "order_id": "71303d7e93b399f5bcd537d124c0bcfa",
+  "order_status": "canceled",
+  "order_delivered_customer_date": null,
+  "order_estimated_delivery_date": "2016-10-25 00:00:00",
+  "order_delivered_carrier_date": null,
+  "items": [
+    {
+      "order_id": "71303d7e93b399f5bcd537d124c0bcfa",
+      "order_item_id": 1,
+      "product_id": "d2998d7ced12f83f9b832f33cf6507b6",
+      "seller_id": "25e6ffe976bd75618accfe16cefcbd0d",
+      "shipping_limit_date": "2016-10-21 16:19:54",
+      "price": 100.0,
+      "freight_value": 9.34
+    }
+  ],
+  "seller_ids": [
+    "25e6ffe976bd75618accfe16cefcbd0d"
+  ],
+  "item_total_brl": 100.0,
+  "freight_total_brl": 9.34,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:71303d7e93b399f5bcd537d124c0bcfa",
+    "seller:25e6ffe976bd75618accfe16cefcbd0d",
+    "item:71303d7e93b399f5bcd537d124c0bcfa:1",
+    "payment:71303d7e93b399f5bcd537d124c0bcfa:1",
+    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+  ],
+  "payment_total_brl": 109.34,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 1,
+      "payment_value": 109.34
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": false,
+  "expected_total_brl": 109.34,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": false,
+  "payment_ids": [
+    "71303d7e93b399f5bcd537d124c0bcfa:1"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": false,
+  "delivery_classification": null,
+  "late_handoff_seller_ids": [],
+  "root_cause_code": null,
+  "assessment": {
+    "primary_issue": "canceled_order_paid",
+    "case_status": "action_required",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "ORDER_CANCELED_AFTER_PAYMENT",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": [
+      {
+        "party_type": "platform",
+        "party_id": "OLIST_PLATFORM"
+      }
+    ]
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 100.0,
+    "freight_total_brl": 9.34,
+    "payment_total_brl": 109.34,
+    "recommended_refund_brl": 109.34
+  },
+  "resolution_actions": [
+    "issue_full_refund"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "71303d7e93b399f5bcd537d124c0bcfa"
+    ],
+    "item_ids": [
+      "71303d7e93b399f5bcd537d124c0bcfa:1"
+    ],
+    "seller_ids": [
+      "25e6ffe976bd75618accfe16cefcbd0d"
+    ],
+    "payment_ids": [
+      "71303d7e93b399f5bcd537d124c0bcfa:1"
+    ]
+  }
+}

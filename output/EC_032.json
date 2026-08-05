@@ -1,0 +1,105 @@
+{
+  "case_id": "EC_032",
+  "order_id": "c4dad201936ed30eef3c94fafa59ed6e",
+  "order_status": "delivered",
+  "order_delivered_customer_date": "2018-05-25 17:42:25",
+  "order_estimated_delivery_date": "2018-06-13 00:00:00",
+  "order_delivered_carrier_date": "2018-05-24 14:59:00",
+  "items": [
+    {
+      "order_id": "c4dad201936ed30eef3c94fafa59ed6e",
+      "order_item_id": 1,
+      "product_id": "779dd392d4fbe5ca656bf3ceabecbf0b",
+      "seller_id": "1a932caad4f9d804097d7f8e615baed1",
+      "shipping_limit_date": "2018-05-30 12:59:13",
+      "price": 119.0,
+      "freight_value": 14.83
+    },
+    {
+      "order_id": "c4dad201936ed30eef3c94fafa59ed6e",
+      "order_item_id": 2,
+      "product_id": "779dd392d4fbe5ca656bf3ceabecbf0b",
+      "seller_id": "1a932caad4f9d804097d7f8e615baed1",
+      "shipping_limit_date": "2018-05-30 12:59:13",
+      "price": 119.0,
+      "freight_value": 14.83
+    }
+  ],
+  "seller_ids": [
+    "1a932caad4f9d804097d7f8e615baed1"
+  ],
+  "item_total_brl": 238.0,
+  "freight_total_brl": 29.66,
+  "seller_handoff_violations": false,
+  "violating_seller_ids": [],
+  "evidence_ids": [
+    "order:c4dad201936ed30eef3c94fafa59ed6e",
+    "seller:1a932caad4f9d804097d7f8e615baed1",
+    "item:c4dad201936ed30eef3c94fafa59ed6e:1",
+    "item:c4dad201936ed30eef3c94fafa59ed6e:2",
+    "payment:c4dad201936ed30eef3c94fafa59ed6e:1",
+    "policy:DELIVERY_WITHIN_ESTIMATE"
+  ],
+  "payment_total_brl": 267.66,
+  "payment_rows": [
+    {
+      "payment_sequential": 1,
+      "payment_type": "credit_card",
+      "payment_installments": 1,
+      "payment_value": 267.66
+    }
+  ],
+  "is_paid": true,
+  "is_split_payment": false,
+  "expected_total_brl": 267.66,
+  "payment_difference_brl": 0.0,
+  "is_payment_reconciled": true,
+  "is_valid_split_payment": false,
+  "payment_ids": [
+    "c4dad201936ed30eef3c94fafa59ed6e:1"
+  ],
+  "is_late_delivery": false,
+  "is_within_estimate": true,
+  "delivery_classification": "unsupported_late_claim",
+  "late_handoff_seller_ids": [],
+  "root_cause_code": "DELIVERY_WITHIN_ESTIMATE",
+  "assessment": {
+    "primary_issue": "unsupported_late_claim",
+    "case_status": "no_action",
+    "confidence": 1.0
+  },
+  "root_cause_analysis": {
+    "ranked_causes": [
+      {
+        "cause_code": "DELIVERY_WITHIN_ESTIMATE",
+        "rank": 1
+      }
+    ],
+    "responsible_parties": []
+  },
+  "financial_resolution": {
+    "currency": "BRL",
+    "item_total_brl": 238.0,
+    "freight_total_brl": 29.66,
+    "payment_total_brl": 267.66,
+    "recommended_refund_brl": 0.0
+  },
+  "resolution_actions": [
+    "reject_late_refund"
+  ],
+  "affected_entities": {
+    "order_ids": [
+      "c4dad201936ed30eef3c94fafa59ed6e"
+    ],
+    "item_ids": [
+      "c4dad201936ed30eef3c94fafa59ed6e:1",
+      "c4dad201936ed30eef3c94fafa59ed6e:2"
+    ],
+    "seller_ids": [
+      "1a932caad4f9d804097d7f8e615baed1"
+    ],
+    "payment_ids": [
+      "c4dad201936ed30eef3c94fafa59ed6e:1"
+    ]
+  }
+}
