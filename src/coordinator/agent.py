@@ -96,7 +96,17 @@ class Coordinator:
             "seller_ids": list(order_data.get("seller_ids", []))[:5],
             "payment_ids": list(payment_data.get("payment_ids", []))[:5],
         }
-        return merged
+        # Keep internal handoff facts out of the submission artifact.
+        output_keys = (
+            "case_id",
+            "assessment",
+            "affected_entities",
+            "root_cause_analysis",
+            "evidence_ids",
+            "financial_resolution",
+            "resolution_actions",
+        )
+        return {key: merged[key] for key in output_keys if key in merged}
 
     @staticmethod
     def _error_output(

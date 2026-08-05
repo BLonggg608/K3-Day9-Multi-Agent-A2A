@@ -1,62 +1,23 @@
 {
   "case_id": "EC_021",
-  "order_id": "13d341318c77969f10d77e1382957542",
-  "order_status": "canceled",
-  "order_delivered_customer_date": null,
-  "order_estimated_delivery_date": "2018-08-08 00:00:00",
-  "order_delivered_carrier_date": null,
-  "items": [
-    {
-      "order_id": "13d341318c77969f10d77e1382957542",
-      "order_item_id": 1,
-      "product_id": "336b5407e252cac6f4e4270979cec8ad",
-      "seller_id": "2e1a7d075abe038c1b2743005fe42ff1",
-      "shipping_limit_date": "2018-08-08 05:10:09",
-      "price": 29.9,
-      "freight_value": 8.96
-    }
-  ],
-  "seller_ids": [
-    "2e1a7d075abe038c1b2743005fe42ff1"
-  ],
-  "item_total_brl": 29.9,
-  "freight_total_brl": 8.96,
-  "seller_handoff_violations": false,
-  "violating_seller_ids": [],
-  "evidence_ids": [
-    "order:13d341318c77969f10d77e1382957542",
-    "seller:2e1a7d075abe038c1b2743005fe42ff1",
-    "item:13d341318c77969f10d77e1382957542:1",
-    "payment:13d341318c77969f10d77e1382957542:1",
-    "policy:ORDER_CANCELED_AFTER_PAYMENT"
-  ],
-  "payment_total_brl": 38.86,
-  "payment_rows": [
-    {
-      "payment_sequential": 1,
-      "payment_type": "boleto",
-      "payment_installments": 1,
-      "payment_value": 38.86
-    }
-  ],
-  "is_paid": true,
-  "is_split_payment": false,
-  "expected_total_brl": 38.86,
-  "payment_difference_brl": 0.0,
-  "is_payment_reconciled": true,
-  "is_valid_split_payment": false,
-  "payment_ids": [
-    "13d341318c77969f10d77e1382957542:1"
-  ],
-  "is_late_delivery": false,
-  "is_within_estimate": false,
-  "delivery_classification": null,
-  "late_handoff_seller_ids": [],
-  "root_cause_code": null,
   "assessment": {
     "primary_issue": "canceled_order_paid",
     "case_status": "action_required",
     "confidence": 1.0
+  },
+  "affected_entities": {
+    "order_ids": [
+      "13d341318c77969f10d77e1382957542"
+    ],
+    "item_ids": [
+      "13d341318c77969f10d77e1382957542:1"
+    ],
+    "seller_ids": [
+      "2e1a7d075abe038c1b2743005fe42ff1"
+    ],
+    "payment_ids": [
+      "13d341318c77969f10d77e1382957542:1"
+    ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
@@ -72,6 +33,13 @@
       }
     ]
   },
+  "evidence_ids": [
+    "order:13d341318c77969f10d77e1382957542",
+    "seller:2e1a7d075abe038c1b2743005fe42ff1",
+    "item:13d341318c77969f10d77e1382957542:1",
+    "payment:13d341318c77969f10d77e1382957542:1",
+    "policy:ORDER_CANCELED_AFTER_PAYMENT"
+  ],
   "financial_resolution": {
     "currency": "BRL",
     "item_total_brl": 29.9,
@@ -81,19 +49,5 @@
   },
   "resolution_actions": [
     "issue_full_refund"
-  ],
-  "affected_entities": {
-    "order_ids": [
-      "13d341318c77969f10d77e1382957542"
-    ],
-    "item_ids": [
-      "13d341318c77969f10d77e1382957542:1"
-    ],
-    "seller_ids": [
-      "2e1a7d075abe038c1b2743005fe42ff1"
-    ],
-    "payment_ids": [
-      "13d341318c77969f10d77e1382957542:1"
-    ]
-  }
+  ]
 }

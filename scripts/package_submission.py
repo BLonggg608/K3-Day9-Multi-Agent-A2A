@@ -21,6 +21,8 @@ def package_submission(output_dir: Path = OUTPUT_DIR, zip_path: Path = DEFAULT_Z
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
         for case_id in EXPECTED_CASE_IDS:
             file_path = output_dir / f"{case_id}.json"
+            # The submission archive contains the output directory with the
+            # 50 required JSON files inside it.
             zf.write(file_path, arcname=f"output/{case_id}.json")
 
     print(f"Wrote {zip_path}")

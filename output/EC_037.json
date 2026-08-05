@@ -1,66 +1,23 @@
 {
   "case_id": "EC_037",
-  "order_id": "b90e46cdc30adec2f0fa041984341170",
-  "order_status": "delivered",
-  "order_delivered_customer_date": "2018-01-26 20:58:42",
-  "order_estimated_delivery_date": "2018-01-22 00:00:00",
-  "order_delivered_carrier_date": "2018-01-04 22:52:04",
-  "items": [
-    {
-      "order_id": "b90e46cdc30adec2f0fa041984341170",
-      "order_item_id": 1,
-      "product_id": "b1d207586fca400a2370d50a9ba1da98",
-      "seller_id": "1ca7077d890b907f89be8c954a02686a",
-      "shipping_limit_date": "2018-01-04 02:37:51",
-      "price": 149.0,
-      "freight_value": 14.79
-    }
-  ],
-  "seller_ids": [
-    "1ca7077d890b907f89be8c954a02686a"
-  ],
-  "item_total_brl": 149.0,
-  "freight_total_brl": 14.79,
-  "seller_handoff_violations": true,
-  "violating_seller_ids": [
-    "1ca7077d890b907f89be8c954a02686a"
-  ],
-  "evidence_ids": [
-    "order:b90e46cdc30adec2f0fa041984341170",
-    "seller:1ca7077d890b907f89be8c954a02686a",
-    "item:b90e46cdc30adec2f0fa041984341170:1",
-    "payment:b90e46cdc30adec2f0fa041984341170:1",
-    "policy:SELLER_HANDOFF_AFTER_LIMIT"
-  ],
-  "payment_total_brl": 163.79,
-  "payment_rows": [
-    {
-      "payment_sequential": 1,
-      "payment_type": "boleto",
-      "payment_installments": 1,
-      "payment_value": 163.79
-    }
-  ],
-  "is_paid": true,
-  "is_split_payment": false,
-  "expected_total_brl": 163.79,
-  "payment_difference_brl": 0.0,
-  "is_payment_reconciled": true,
-  "is_valid_split_payment": false,
-  "payment_ids": [
-    "b90e46cdc30adec2f0fa041984341170:1"
-  ],
-  "is_late_delivery": true,
-  "is_within_estimate": false,
-  "delivery_classification": "late_delivery_seller",
-  "late_handoff_seller_ids": [
-    "1ca7077d890b907f89be8c954a02686a"
-  ],
-  "root_cause_code": "SELLER_HANDOFF_AFTER_LIMIT",
   "assessment": {
     "primary_issue": "late_delivery_seller",
     "case_status": "action_required",
     "confidence": 1.0
+  },
+  "affected_entities": {
+    "order_ids": [
+      "b90e46cdc30adec2f0fa041984341170"
+    ],
+    "item_ids": [
+      "b90e46cdc30adec2f0fa041984341170:1"
+    ],
+    "seller_ids": [
+      "1ca7077d890b907f89be8c954a02686a"
+    ],
+    "payment_ids": [
+      "b90e46cdc30adec2f0fa041984341170:1"
+    ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
@@ -76,6 +33,13 @@
       }
     ]
   },
+  "evidence_ids": [
+    "order:b90e46cdc30adec2f0fa041984341170",
+    "seller:1ca7077d890b907f89be8c954a02686a",
+    "item:b90e46cdc30adec2f0fa041984341170:1",
+    "payment:b90e46cdc30adec2f0fa041984341170:1",
+    "policy:SELLER_HANDOFF_AFTER_LIMIT"
+  ],
   "financial_resolution": {
     "currency": "BRL",
     "item_total_brl": 149.0,
@@ -85,19 +49,5 @@
   },
   "resolution_actions": [
     "refund_freight"
-  ],
-  "affected_entities": {
-    "order_ids": [
-      "b90e46cdc30adec2f0fa041984341170"
-    ],
-    "item_ids": [
-      "b90e46cdc30adec2f0fa041984341170:1"
-    ],
-    "seller_ids": [
-      "1ca7077d890b907f89be8c954a02686a"
-    ],
-    "payment_ids": [
-      "b90e46cdc30adec2f0fa041984341170:1"
-    ]
-  }
+  ]
 }

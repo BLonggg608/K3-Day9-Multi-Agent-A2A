@@ -1,48 +1,19 @@
 {
   "case_id": "EC_028",
-  "order_id": "80f0181edc2f4a5bd3384a3c39a83cee",
-  "order_status": "unavailable",
-  "order_delivered_customer_date": null,
-  "order_estimated_delivery_date": "2018-01-30 00:00:00",
-  "order_delivered_carrier_date": null,
-  "items": [],
-  "seller_ids": [],
-  "item_total_brl": 0.0,
-  "freight_total_brl": 0.0,
-  "seller_handoff_violations": false,
-  "violating_seller_ids": [],
-  "evidence_ids": [
-    "order:80f0181edc2f4a5bd3384a3c39a83cee",
-    "payment:80f0181edc2f4a5bd3384a3c39a83cee:1",
-    "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
-  ],
-  "payment_total_brl": 61.19,
-  "payment_rows": [
-    {
-      "payment_sequential": 1,
-      "payment_type": "credit_card",
-      "payment_installments": 1,
-      "payment_value": 61.19
-    }
-  ],
-  "is_paid": true,
-  "is_split_payment": false,
-  "expected_total_brl": 0.0,
-  "payment_difference_brl": 61.19,
-  "is_payment_reconciled": false,
-  "is_valid_split_payment": false,
-  "payment_ids": [
-    "80f0181edc2f4a5bd3384a3c39a83cee:1"
-  ],
-  "is_late_delivery": false,
-  "is_within_estimate": false,
-  "delivery_classification": null,
-  "late_handoff_seller_ids": [],
-  "root_cause_code": null,
   "assessment": {
     "primary_issue": "unavailable_order_paid",
     "case_status": "action_required",
     "confidence": 1.0
+  },
+  "affected_entities": {
+    "order_ids": [
+      "80f0181edc2f4a5bd3384a3c39a83cee"
+    ],
+    "item_ids": [],
+    "seller_ids": [],
+    "payment_ids": [
+      "80f0181edc2f4a5bd3384a3c39a83cee:1"
+    ]
   },
   "root_cause_analysis": {
     "ranked_causes": [
@@ -58,6 +29,11 @@
       }
     ]
   },
+  "evidence_ids": [
+    "order:80f0181edc2f4a5bd3384a3c39a83cee",
+    "payment:80f0181edc2f4a5bd3384a3c39a83cee:1",
+    "policy:ORDER_UNAVAILABLE_AFTER_PAYMENT"
+  ],
   "financial_resolution": {
     "currency": "BRL",
     "item_total_brl": 0.0,
@@ -67,15 +43,5 @@
   },
   "resolution_actions": [
     "issue_full_refund"
-  ],
-  "affected_entities": {
-    "order_ids": [
-      "80f0181edc2f4a5bd3384a3c39a83cee"
-    ],
-    "item_ids": [],
-    "seller_ids": [],
-    "payment_ids": [
-      "80f0181edc2f4a5bd3384a3c39a83cee:1"
-    ]
-  }
+  ]
 }
