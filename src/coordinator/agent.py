@@ -17,9 +17,17 @@ class Coordinator:
 
     name = "coordinator"
 
-    def __init__(self, agents: Iterable[Agent], verifier: Agent | None = None):
+    def __init__(
+        self,
+        agents: Iterable[Agent],
+        verifier: Agent | None = None,
+        llm_client: Any | None = None,
+    ):
         self.agents = list(agents)
         self.verifier = verifier
+        self.llm_client = llm_client
+        self.last_llm_rationale: str | None = None
+        self.last_llm_error: str | None = None
 
     def process_case(self, case: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(case, dict) or not case.get("case_id"):
@@ -33,6 +41,13 @@ class Coordinator:
                 return self._error_output(case, context, result)
 
         output = self._assemble_output(case, context)
+        self.last_llm_rationale = None
+        self.last_llm_error = None
+        if self.llm_client is not None:
+            try:
+                self.last_llm_rationale = self.llm_client.explain_case(case, output)
+            except Exception as exc:  # preserve deterministic resolution on provider failure
+                self.last_llm_error = f"{type(exc).__name__}: {exc}"
         if self.verifier is not None:
             verification = self.verifier.analyze(
                 {"case": case, "results": context.as_dict()["results"], "output": output}
