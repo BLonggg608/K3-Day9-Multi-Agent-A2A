@@ -24,13 +24,13 @@ Coordinator chỉ điều phối và ghép kết quả. Agent domain là nơi du
 
 ## 3. Ownership và quyền truy cập
 
-| Agent | Ownership | Dữ liệu được đọc | Kết quả bàn giao |
-| --- | --- | --- | --- |
-| Coordinator | `src/coordinator/` | Input và kết quả agent | Case context/output |
-| Order & Seller | `src/order_seller/` | orders, order_items, sellers | Order, item, seller facts |
-| Payment | `src/payment/` | order_payments | Payment facts và reconciliation |
+| Agent             | Ownership              | Dữ liệu được đọc                | Kết quả bàn giao                  |
+| ----------------- | ---------------------- | ------------------------------- | --------------------------------- |
+| Coordinator       | `src/coordinator/`     | Input và kết quả agent          | Case context/output               |
+| Order & Seller    | `src/order_seller/`    | orders, order_items, sellers    | Order, item, seller facts         |
+| Payment           | `src/payment/`         | order_payments                  | Payment facts và reconciliation   |
 | Delivery & Policy | `src/delivery_policy/` | Order facts, item facts, policy | Root cause, party, refund, action |
-| Verifier | `src/verifier/` | Output và source facts | Validation errors/pass |
+| Verifier          | `src/verifier/`        | Output và source facts          | Validation errors/pass            |
 
 `src/shared/contracts.py` là contract chung. Sau khi nhóm thống nhất, file này được khóa; thay đổi contract phải được cả nhóm review.
 
@@ -40,7 +40,7 @@ Mỗi agent nhận một context có dạng:
 
 ```json
 {
-  "case": {"case_id": "EC_001", "...": "..."},
+  "case": { "case_id": "EC_001", "...": "..." },
   "results": {
     "agent_name": {
       "agent": "agent_name",

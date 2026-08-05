@@ -1,4 +1,6 @@
 {
+  "cohort": "K3",
+  "repo_starter": "https://github.com/BLonggg608/K3-Day9-Multi-Agent-A2A",
   "framework": "Python stdlib + pandas + OpenAI Python SDK; Coordinator uses manual dependency injection per architecture.md",
   "runtime": "local orchestration with OpenAI API inference",
   "python_version": "3.14",
