@@ -37,7 +37,6 @@
     "payment:405be8487a7fde1db0bc31ad6b08050a:1",
     "payment:405be8487a7fde1db0bc31ad6b08050a:2",
     "payment:405be8487a7fde1db0bc31ad6b08050a:3",
-    "policy:DELIVERY_WITHIN_ESTIMATE",
     "policy:MULTIPLE_PAYMENTS_RECONCILED"
   ],
   "financial_resolution": {

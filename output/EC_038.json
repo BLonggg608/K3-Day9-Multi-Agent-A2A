@@ -35,7 +35,6 @@
     "item:6b27933c6a46e3d66203137ad1fdb678:1",
     "payment:6b27933c6a46e3d66203137ad1fdb678:1",
     "payment:6b27933c6a46e3d66203137ad1fdb678:2",
-    "policy:DELIVERY_WITHIN_ESTIMATE",
     "policy:MULTIPLE_PAYMENTS_RECONCILED"
   ],
   "financial_resolution": {
